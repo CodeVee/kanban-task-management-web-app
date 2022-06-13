@@ -2,7 +2,7 @@
   <app-side-bar [opened]="opened" (close)="closeSideBar()"></app-side-bar>
   <app-side-bar-toggler (open)="openSideBar()"></app-side-bar-toggler>
   <main class="bg-grey-light dark:bg-grey-vdark flex-1">
-    <nav></nav>
+    <app-nav-bar [opened]="opened"></app-nav-bar>
     <div></div>
   </main>
 </div>

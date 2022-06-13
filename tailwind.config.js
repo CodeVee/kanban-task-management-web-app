@@ -11,6 +11,8 @@ module.exports = {
       'purple': {
         light: '#a8a4ff',
         DEFAULT: '#635fc7',
+        medium: '#635fc740',
+        low: '#635fc71a',
       },
       'red': {
         light: '#ff9898',
@@ -47,10 +49,16 @@ module.exports = {
     },
     extend: {
       spacing: {
+        1.2: '1.2rem',
         1.6: '1.6rem',
+        2.4: '2.4rem',
         3.2: '3.2rem',
         4.8: '4.8rem',
       },
+      borderRadius: {
+        2: '2rem',
+        2.4: '2.4rem',
+      }
     },
   },
   plugins: [],
