@@ -5,12 +5,18 @@
   </figure>
   <div class="mb-auto flex flex-col w-[27.6rem]" [ngClass]="{'hidden': !opened}">
     <h2 class=" font-bold text-sm leading-sm text-grey-medium tracking-sm pl-3.2 mb-8 uppercase">All boards ({{boards.length}})</h2>
-    <button *ngFor="let board of boards" [ngClass]="{'bg-purple': board.active}" class="pl-3.2  h-4.8 rounded-r-full flex items-center">
-      <img *ngIf="board.active" src="assets/images/icon-board-active.svg" alt="board" class="mr-1.6 h-1.6 w-1.6">
-      <img *ngIf="!board.active" src="assets/images/icon-board.svg" alt="board" class="mr-1.6 h-1.6 w-1.6">
-      <span class="font-bold text-md leading-md" [ngClass]="{'text-white': board.active, 'text-grey-medium': !board.active}">{{board.name}}</span>
-    </button>
-    <button class="pl-3.2 h-4.8 rounded-r-full flex items-center">
+    <ng-container *ngFor="let board of boards">
+      <button *ngIf="board.active" class="bg-purple pl-3.2  h-4.8 rounded-r-full flex items-center text-white">
+        <img src="assets/images/icon-board-active.svg" alt="board" class="mr-1.6 h-1.6 w-1.6">
+        <span class="font-bold text-md leading-md">{{board.name}}</span>
+      </button>
+      <button *ngIf="!board.active" class="marker pl-3.2  h-4.8 rounded-r-full flex items-center text-grey-medium hover:bg-purple-low dark:hover:bg-white hover:text-purple">
+        <img src="assets/images/icon-board.svg" alt="board" class="mr-1.6 h-1.6 w-1.6 idle">
+        <img src="assets/images/icon-board-new.svg" alt="board" class="mr-1.6 h-1.6 w-1.6 cover">
+        <span class="font-bold text-md leading-md">{{board.name}}</span>
+      </button>
+    </ng-container>
+    <button class="pl-3.2 h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white">
       <img src="assets/images/icon-board-new.svg" alt="board" class="mr-1.6 h-1.6 w-1.6">
       <span class="font-bold text-md leading-md text-purple">+ Create New Board</span>
     </button>
@@ -18,8 +24,9 @@
   <div class="pl-10 mb-3" [ngClass]="{'hidden': !opened}">
     <app-theme-toggler></app-theme-toggler>
   </div>
-  <button  [ngClass]="{'hidden': !opened}" (click)="collapseSidebar()" class="pl-3.2 w-[27.6rem] h-4.8 flex items-center">
-    <img src="assets/images/icon-hide-sidebar.svg" alt="hide" class="mr-1.6 h-1.6 w-1.6">
-    <span class="font-bold text-md leading-md text-grey-medium">Hide Sidebar</span>
+  <button [ngClass]="{'hidden': !opened}" (click)="collapseSidebar()" class="marker pl-3.2 w-[27.6rem] h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white text-grey-medium hover:text-purple">
+    <img src="assets/images/icon-hide-sidebar.svg" alt="hide" class="mr-1.6 h-1.6 w-1.6 idle">
+    <img src="assets/images/icon-hide-sidebar-hover.svg" alt="hide" class="mr-1.6 h-1.6 w-1.6 cover">
+    <span class="font-bold text-md leading-md">Hide Sidebar</span>
   </button>
 </aside>

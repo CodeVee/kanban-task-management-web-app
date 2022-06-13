@@ -1,1 +1,13 @@
-
+.marker {
+  .cover {
+    display: none;
+  }
+  &:hover {
+    .idle {
+      display: none;
+    }
+    .cover {
+      display: block;
+    }
+  }
+}
