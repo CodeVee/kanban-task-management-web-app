@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'mixins';
+
+html, body {
+  font-family: $font-jakarta;
+  font-size: $fs-10;
+}
+
+@include desktop {
+  body, html {
+    font-size: $fs-8s;
+  }
+}
+
+@include tablet-wide {
+  body, html {
+    font-size: $fs-10s;
+  }
+}
+
+@include tablet {
+  body, html {
+    font-size: $fs-10;
+  }
+}
+
+@include mobile-wide {
+  body, html {
+    font-size: $fs-11s;
+  }
+}
+
+@include mobile {
+  body, html {
+    font-size: $fs-10;
+  }
+}
