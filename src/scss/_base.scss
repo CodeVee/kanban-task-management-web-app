@@ -1,11 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply flex items-center justify-center font-bold focus:outline-none disabled:opacity-25;
+  }
+  .btn-primary {
+    @apply btn bg-purple text-white hover:bg-purple-light;
+  }
+  .btn-secondary {
+    @apply btn bg-purple-low text-purple hover:bg-purple-medium;
+  }
+  .btn-destructive {
+    @apply btn bg-red text-white hover:bg-red-light;
+  }
+
+  .btn-lg {
+    @apply h-4.8 rounded-2.4 text-md leading-md;
+  }
+
+  .btn-sm {
+    @apply h-16 rounded-2 text-ms leading-ms;
+  }
+}
+
 @import 'mixins';
+
 
 html, body {
   font-family: $font-jakarta;
   font-size: $fs-10;
+}
+
+.menu + .cdk-overlay-connected-position-bounding-box {
+  top: 9rem !important;
+
+  .mat-menu-panel {
+    background-color: transparent;
+  }
+}
+
+.mat-menu-content {
+  padding: 0 !important;
 }
 
 @include desktop {
