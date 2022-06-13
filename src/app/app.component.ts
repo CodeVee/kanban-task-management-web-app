@@ -10,6 +10,7 @@ import { ThemeService } from './services/theme.service';
 })
 export class AppComponent {
   theme!: Theme;
+  opened = true;
   protected sub = new Subject<void>();
 
   constructor(private themeService: ThemeService) { }
@@ -26,5 +27,9 @@ export class AppComponent {
 
   updateTheme(theme: Theme): void {
     this.themeService.changeTheme(theme);
+  }
+
+  closeSideBar(): void {
+    this.opened = false;
   }
 }

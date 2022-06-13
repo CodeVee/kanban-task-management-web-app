@@ -18,7 +18,7 @@ module.exports = {
       },
       'grey': {
         light: '#f4f7fd',
-        medium: '828fa3',
+        medium: '#828fa3',
         dark: '#2b2c37',
         vdark: '#20212c',
       },
@@ -42,7 +42,15 @@ module.exports = {
       lg: '2.3rem',
       xl: '3rem',
     },
-    extend: {},
+    letterSpacing: {
+      sm: '.24rem',
+    },
+    extend: {
+      spacing: {
+        1.6: '1.6rem',
+        3.2: '3.2rem',
+      },
+    },
   },
   plugins: [],
   darkMode: 'class'
