@@ -32,4 +32,7 @@ export class AppComponent {
   closeSideBar(): void {
     this.opened = false;
   }
+  openSideBar(): void {
+    this.opened = true;
+  }
 }

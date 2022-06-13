@@ -8,12 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ThemeTogglerComponent } from './components/theme-toggler/theme-toggler.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { MaterialModule } from './material.module';
+import { SideBarTogglerComponent } from './components/side-bar-toggler/side-bar-toggler.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ThemeTogglerComponent,
-    SideBarComponent
+    SideBarComponent,
+    SideBarTogglerComponent
   ],
   imports: [
     BrowserModule,
