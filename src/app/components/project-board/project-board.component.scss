@@ -1,0 +1,30 @@
+.board {
+  height: calc(100vh - 9.6rem);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 1.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+      background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: lightgray;
+      border-radius: 2rem;
+      border: .3ren solid transparent;
+  }
+}
+
+.card {
+
+  &-light {
+    background: linear-gradient(180deg, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%);
+  }
+
+
+  &-dark {
+    background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%);;
+  }
+}

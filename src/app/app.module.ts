@@ -11,6 +11,7 @@ import { MaterialModule } from './material.module';
 import { SideBarTogglerComponent } from './components/side-bar-toggler/side-bar-toggler.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
+import { ProjectBoardComponent } from './components/project-board/project-board.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
     SideBarComponent,
     SideBarTogglerComponent,
     NavBarComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    ProjectBoardComponent
   ],
   imports: [
     BrowserModule,

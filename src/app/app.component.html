@@ -1,11 +1,9 @@
-<div [ngClass]="theme" class="flex min-h-screen relative">
+<div [ngClass]="theme" class="flex relative">
   <app-side-bar [opened]="opened" (close)="closeSideBar()"></app-side-bar>
   <app-side-bar-toggler (open)="openSideBar()"></app-side-bar-toggler>
-  <main class="bg-grey-light dark:bg-grey-vdark flex-1">
+  <main class="flex-1 duration-1000 main" [ngClass]="{'ml-[30rem]': opened}">
     <app-nav-bar [opened]="opened"></app-nav-bar>
-    <div>
-      <app-task-card></app-task-card>
-    </div>
+    <app-project-board></app-project-board>
   </main>
 </div>
 
