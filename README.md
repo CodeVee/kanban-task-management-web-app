@@ -6,7 +6,7 @@ This is a solution to the [Kanban task management web app challenge on Frontend 
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
+  - [Screenshots](#screenshots)
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
@@ -35,9 +35,10 @@ Users should be able to:
 - **Bonus**: Keep track of any changes, even after refreshing the browser (`localStorage` could be used for this if you're not building out a full-stack app)
 - **Bonus**: Build this project as a full-stack application
 
-### Screenshot
+### Screenshots
 
-![](./src/assets/images/screenshot.png)
+![](./src/assets/images/screenshot-light.png)
+![](./src/assets/images/screenshot-dark.png)
 
 
 ### Links
