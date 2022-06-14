@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Board } from 'src/app/models/board.model';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,16 +8,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class SideBarComponent {
 
+  @Input() boards!: Board[];
+  @Input() activeBoard!: Board;
   @Input() opened!: boolean;
   @Output() close = new EventEmitter<void>();
-  boards = [
-    { name: 'Platform Launch', active: true, },
-    { name: 'Marketing Plan', active: false, },
-    { name: 'Roadmap', active: false, },
-  ]
+  @Output() selected = new EventEmitter<Board>();
 
   collapseSidebar(): void {
     this.close.emit();
+  }
+
+  selectBoard(board: Board): void {
+    this.selected.emit(board);
   }
 
 }

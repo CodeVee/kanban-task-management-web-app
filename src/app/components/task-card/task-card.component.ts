@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SubTask, Task } from '../../models/board.model';
 
 @Component({
   selector: 'app-task-card',
@@ -7,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskCardComponent implements OnInit {
 
-  header = 'Review results of usability tests and iterate';
-  done = 1;
-  total = 1;
+  @Input() task!: Task;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  calculateCompleted(subtasks: SubTask[]): number {
+    return subtasks.filter(s => s.isCompleted).length;
   }
 
 }

@@ -1,13 +1,13 @@
 <div class="bg-grey-light dark:bg-grey-vdark board p-2.4 overflow-auto whitespace-nowrap">
-  <ng-container *ngIf="columns.length">
-    <div *ngFor="let column of columns" class="inline-block w-[28rem] mr-2.4 whitespace-normal">
+  <ng-container *ngIf="activeBoard.columns.length">
+    <div *ngFor="let column of activeBoard.columns; let i = index" class="inline-block w-[28rem] mr-2.4 whitespace-normal">
       <div class="flex flex-col">
         <h3 class="mb-2.4 font-bold text-sm leading-sm tracking-sm text-grey-medium uppercase flex items-center">
-          <span class="w-6 h-6 bg-purple rounded-full mr-1.2"></span>
-          <span>TODO (4)</span>
+          <span [ngStyle]="{background: colors[i % colors.length]}" class="w-6 h-6 rounded-full mr-1.2"></span>
+          <span>{{column.name}} ({{column.tasks.length}})</span>
         </h3>
         <div class="flex flex-col gap-8">
-          <app-task-card *ngFor="let item of columns"></app-task-card>
+          <app-task-card [task]="task" *ngFor="let task of column.tasks"></app-task-card>
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="!columns.length">
+  <ng-container *ngIf="!activeBoard.columns.length">
     <div class="flex flex-col justify-center items-center h-full">
       <h3 class="font-bold text-grey-medium text-lg leading-lg mb-3.2">
         This board is empty. Create a new column to get started.

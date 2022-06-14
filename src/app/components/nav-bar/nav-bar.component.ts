@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Board } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 
@@ -11,7 +12,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 export class NavBarComponent implements OnInit, OnDestroy {
 
   @Input() opened!: boolean;
-  @Input() header = 'Platform Launch';
+  @Input() activeBoard!: Board;
   darkMode = false;
   protected sub = new Subscription();
 

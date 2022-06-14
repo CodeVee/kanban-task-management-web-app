@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Board } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 
@@ -11,7 +12,8 @@ import { ThemeService } from 'src/app/services/theme.service';
 export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   darkMode = false;
-  columns = [1, 2, 3, 4, 5];
+  colors = ['#49C4E5', '#8471F2', '#67E2AE']
+  @Input() activeBoard!: Board;
   protected sub = new Subscription();
   constructor(private themeService: ThemeService) { }
 
