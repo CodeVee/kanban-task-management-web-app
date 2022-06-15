@@ -7,7 +7,7 @@
           <span>{{column.name}} ({{column.tasks.length}})</span>
         </h3>
         <div class="flex flex-col gap-8">
-          <app-task-card [task]="task" *ngFor="let task of column.tasks"></app-task-card>
+          <app-task-card (click)="viewTask(task, column.name)" [task]="task" *ngFor="let task of column.tasks"></app-task-card>
         </div>
       </div>
     </div>

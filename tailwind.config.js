@@ -49,6 +49,7 @@ module.exports = {
     },
     extend: {
       spacing: {
+        0.8: '0.8rem',
         1.2: '1.2rem',
         1.6: '1.6rem',
         2.4: '2.4rem',
@@ -61,6 +62,6 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
   darkMode: 'class'
 }

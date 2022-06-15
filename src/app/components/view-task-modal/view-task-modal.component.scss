@@ -1,0 +1,29 @@
+@import 'variables';
+
+.tr-3e {
+  transition: all 0.3s ease;
+}
+
+label span svg {
+  left: 1px;
+  stroke-dasharray: 1.3rem;
+  stroke-dashoffset: 1.3rem;
+  transition: all 0.3s ease;
+  transform: translate3d(0, 0, 0);
+}
+
+input:checked + label span {
+  background: $purple;
+  border-color: $purple;
+  animation: zoom-in-out 0.3s ease;
+}
+
+input:checked + label span svg {
+  stroke-dashoffset: 0;
+}
+
+@keyframes zoom-in-out {
+  50% {
+    transform: scale(0.9);
+  }
+}

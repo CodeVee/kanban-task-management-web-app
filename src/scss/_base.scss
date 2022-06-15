@@ -33,12 +33,34 @@ html, body {
   font-size: $fs-10;
 }
 
-.menu + .cdk-overlay-connected-position-bounding-box {
-  top: 9rem !important;
+.mat-dialog-container {
+  padding: 0 !important;
+  background-color: transparent;
+}
 
+.menu + .cdk-overlay-connected-position-bounding-box {
   .mat-menu-panel {
-    background-color: transparent;
+    margin-top: 2.2rem;
   }
+}
+
+.menu-left + .cdk-overlay-connected-position-bounding-box {
+  .mat-menu-panel {
+    margin-top: 2.2rem;
+    margin-left: -9rem;
+  }
+}
+
+.drop + .cdk-overlay-connected-position-bounding-box {
+  .mat-menu-panel {
+    margin-top: .8rem;
+  }
+}
+
+.mat-menu-panel {
+  background-color: transparent;
+  max-width: fit-content !important;
+  min-height: fit-content !important;
 }
 
 .mat-menu-content {

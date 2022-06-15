@@ -13,6 +13,7 @@ import { SideBarTogglerComponent } from './components/side-bar-toggler/side-bar-
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
 import { ProjectBoardComponent } from './components/project-board/project-board.component';
+import { ViewTaskModalComponent } from './components/view-task-modal/view-task-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ProjectBoardComponent } from './components/project-board/project-board.
     SideBarTogglerComponent,
     NavBarComponent,
     TaskCardComponent,
-    ProjectBoardComponent
+    ProjectBoardComponent,
+    ViewTaskModalComponent
   ],
   imports: [
     BrowserModule,

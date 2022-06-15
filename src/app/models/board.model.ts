@@ -7,6 +7,8 @@ export interface Board {
   columns: Column[];
 }
 
+export const DefaultBoard: Board = { name: '', columns: []}
+
 export interface Column {
   name: string;
   tasks: Task[];
@@ -22,4 +24,15 @@ export interface Task {
 export interface SubTask {
   title: string;
   isCompleted: boolean;
+}
+
+export interface TaskView {
+  task: Task,
+  columns: string[],
+  column: string
+}
+
+export enum TaskOption {
+  Edit = 'Edit',
+  Delete = 'Delete'
 }

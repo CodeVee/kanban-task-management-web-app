@@ -1,0 +1,44 @@
+<div [ngClass]="{'bg-grey-dark': darkMode, 'bg-white': !darkMode}" class="w-[48rem] flex flex-col gap-2.4 rounded-lg p-3.2">
+  <div class="flex gap-2.4">
+    <h4 [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" class="font-bold text-lg leading-lg flex-1">
+      {{task.title}}
+    </h4>
+    <button class="self-center outline-none" [matMenuTriggerFor]="menu">
+      <img src="assets/images/icon-vertical-ellipsis.svg" alt="options" class="h-8 w-2">
+    </button>
+    <mat-menu #menu="matMenu" [backdropClass]="'menu-left'">
+      <div [ngClass]="{'bg-grey-vdark': darkMode, 'bg-white': !darkMode}" class="p-1.6 flex flex-col gap-1.6 w-[19.2rem] rounded-xl">
+        <button (click)="editTask()" class="text-left font-medium text-ms leading-ms text-grey-medium">Edit Task</button>
+        <button (click)="deleteTask()" class="text-left font-medium text-ms leading-ms text-red">Delete Task</button>
+      </div>
+    </mat-menu>
+  </div>
+  <p class=" text-grey-medium font-medium text-ms leading-ms ">
+    {{task.description}}
+  </p>
+  <div>
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-1.6 font-bold text-sm leading-sm">Subtasks ({{calculateCompleted(task.subtasks)}} of {{task.subtasks.length}})</h5>
+    <div class="flex flex-col gap-3">
+      <button (click)="updateSubtask(subtask)" [ngClass]="{'bg-grey-vdark': darkMode, 'bg-grey-light': !darkMode}" *ngFor="let subtask of task.subtasks" class="flex items-center gap-1.6 rounded-md p-1.2 hover:bg-purple/25">
+        <input [checked]="subtask.isCompleted" [ngClass]="{'bg-grey-dark': darkMode}" type="checkbox" class="rounded checked:text-purple focus:ring-offset-0 focus:ring-transparent border-grey-medium/25 h-1.6 w-1.6 " />
+        <span [ngClass]="{'text-white': darkMode, 'text-black': !darkMode, 'line-through': subtask.isCompleted, 'opacity-50': subtask.isCompleted}" class="font-bold text-sm leading-sm text-left">
+          {{subtask.title}}
+        </span>
+      </button>
+    </div>
+  </div>
+  <div>
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-0.8 font-bold text-sm leading-sm">Current Status</h5>
+    <button (click)="openDropdown()" class="flex h-16 w-full items-center justify-between px-1.6 border rounded-md border-grey-medium/25">
+      <span [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" class=" font-medium text-ms leading-ms">{{column}}</span>
+      <img src="assets/images/icon-chevron-down.svg" alt="arrow-down" *ngIf="!opened">
+      <img src="assets/images/icon-chevron-up.svg" alt="arrow-up" *ngIf="opened">
+    </button>
+    <div class="" [matMenuTriggerFor]="drop" (menuClosed)="close()" (menuOpened)="open()"></div>
+    <mat-menu #drop="matMenu" [backdropClass]="'drop'">
+      <div [ngClass]="{'bg-grey-vdark': darkMode, 'bg-white': !darkMode}" class="p-1.6 flex flex-col gap-1.6 w-[41.6rem] rounded-xl">
+        <button (click)="updateStatus(column)" *ngFor="let column of columns" class="text-left font-medium text-ms leading-ms text-grey-medium">{{column}}</button>
+      </div>
+    </mat-menu>
+  </div>
+</div>
