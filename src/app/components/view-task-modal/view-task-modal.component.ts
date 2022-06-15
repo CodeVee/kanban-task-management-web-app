@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
-import { Column, SubTask, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { SubTask, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({

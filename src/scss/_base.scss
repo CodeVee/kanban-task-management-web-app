@@ -12,6 +12,9 @@
   .btn-secondary {
     @apply btn bg-purple-low text-purple hover:bg-purple-medium;
   }
+  .btn-secondary-dark {
+    @apply btn bg-white text-purple;
+  }
   .btn-destructive {
     @apply btn bg-red text-white hover:bg-red-light;
   }
@@ -22,6 +25,18 @@
 
   .btn-sm {
     @apply h-16 rounded-2 text-ms leading-ms;
+  }
+
+  .main-control {
+    @apply w-full cursor-pointer focus:ring-offset-0 focus:ring-transparent focus:border-purple bg-transparent rounded-md placeholder:opacity-25 border-grey-medium/25 h-16 px-1.6 font-medium text-ms leading-ms;
+  }
+
+  .main-control-error {
+    @apply border-red focus:border-red;
+  }
+
+  .main-error {
+    @apply absolute text-red font-medium text-ms leading-ms top-0.8 right-1.6;
   }
 }
 
@@ -65,6 +80,20 @@ html, body {
 
 .mat-menu-content {
   padding: 0 !important;
+}
+
+.marker {
+  .cover {
+    display: none;
+  }
+  &:hover {
+    .idle {
+      display: none;
+    }
+    .cover {
+      display: block;
+    }
+  }
 }
 
 @include desktop {

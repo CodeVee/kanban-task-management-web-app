@@ -14,6 +14,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TaskCardComponent } from './components/task-card/task-card.component';
 import { ProjectBoardComponent } from './components/project-board/project-board.component';
 import { ViewTaskModalComponent } from './components/view-task-modal/view-task-modal.component';
+import { TaskModalComponent } from './components/task-modal/task-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ViewTaskModalComponent } from './components/view-task-modal/view-task-m
     NavBarComponent,
     TaskCardComponent,
     ProjectBoardComponent,
-    ViewTaskModalComponent
+    ViewTaskModalComponent,
+    TaskModalComponent
   ],
   imports: [
     BrowserModule,

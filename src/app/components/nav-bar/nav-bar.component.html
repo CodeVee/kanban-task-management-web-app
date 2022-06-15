@@ -5,7 +5,7 @@
   </figure>
   <header class="flex-1 flex items-center px-2.4">
     <h1 class="text-xl leading-xl text-black dark:text-white font-bold mr-auto">{{activeBoard.name}}</h1>
-    <button [disabled]="false" class=" btn-primary btn-lg w-[16.4rem]">+ Add New Task</button>
+    <button [disabled]="false" (click)="addTask()" class=" btn-primary btn-lg w-[16.4rem]">+ Add New Task</button>
     <button [matMenuTriggerFor]="menu">
       <img src="assets/images/icon-vertical-ellipsis.svg" alt="options" class="h-8 w-2 ml-2.4">
     </button>

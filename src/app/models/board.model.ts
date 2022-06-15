@@ -26,10 +26,17 @@ export interface SubTask {
   isCompleted: boolean;
 }
 
-export interface TaskView {
-  task: Task,
-  columns: string[],
-  column: string
+export interface TaskBase {
+  task: Task;
+}
+
+export interface TaskSubmit extends TaskBase {
+  edit: boolean;
+}
+
+export interface TaskView extends TaskBase {
+  columns: string[];
+  column: string;
 }
 
 export enum TaskOption {

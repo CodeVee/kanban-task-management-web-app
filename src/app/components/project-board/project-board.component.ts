@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Board, Column, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
+import { TaskModalComponent } from '../task-modal/task-modal.component';
 import { ViewTaskModalComponent } from '../view-task-modal/view-task-modal.component';
 
 @Component({
@@ -45,7 +46,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy, OnChanges {
     dialogRef.afterClosed().subscribe((option: TaskOption) => {
 
       const state = dialogRef.componentInstance;
-      if (!state.reset) {
+      if (!state.reset && !option) {
         return;
       }
       this.updateBoard(column, task);
@@ -55,7 +56,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy, OnChanges {
       }
 
       if (option === TaskOption.Edit) {
-
+        this.editTask(task);
       }
 
       if (option === TaskOption.Delete) {
@@ -64,6 +65,24 @@ export class ProjectBoardComponent implements OnInit, OnDestroy, OnChanges {
     });
 
 
+  }
+
+  private editTask(task:Task): void {
+    const columns = this.activeBoard.columns.map(c => c.name);
+    const column = task.status;
+
+    const dialogRef = this.dialog.open(TaskModalComponent, {
+      data: { task, columns, column } as TaskView,
+    });
+
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+
+      if (!success) {
+        return;
+      }
+
+      this.updateBoard(column, task);
+    });
   }
 
   private updateBoard(column: string, task: Task) {
