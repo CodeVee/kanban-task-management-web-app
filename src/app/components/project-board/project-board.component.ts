@@ -20,6 +20,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   @Input() activeBoard!: Board;
   @Output() columnAdd = new EventEmitter<void>();
+  @Output() boardUpdate = new EventEmitter<void>();
 
   protected sub = new Subscription();
 
@@ -99,19 +100,23 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
 
       const column = this.activeBoard.columns.find(c => c.name === task.status)!;
       column.tasks = column.tasks.filter(d => !(d.title === task.title));
+
+      this.boardUpdate.emit();
     });
   }
 
 
   private updateBoard(column: string, task: Task) {
     if (task.status === column) {
+      this.boardUpdate.emit();
       return;
-
     }
     const oldColumn = this.activeBoard.columns.find(c => c.name === column)!;
     oldColumn.tasks = oldColumn.tasks.filter(d => !(d.title === task.title));
 
     const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
     newColumn.tasks = [...newColumn.tasks, task];
+
+    this.boardUpdate.emit();
   }
 }

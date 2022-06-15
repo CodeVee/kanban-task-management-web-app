@@ -18,7 +18,7 @@ export class AppComponent {
   theme!: Theme;
   opened = true;
   boards: Board[] = [];
-  activeBoard = DefaultBoard;
+  activeBoard!: Board;
   protected sub = new Subject<void>();
 
   constructor(private themeService: ThemeService,
@@ -28,11 +28,21 @@ export class AppComponent {
     this.themeService.currentTheme$.pipe(takeUntil(this.sub))
     .subscribe(theme => this.theme = theme);
 
+    this.boardService.getActiveBoard().pipe(takeUntil(this.sub))
+    .subscribe(board => {
+      this.activeBoard = board;
+    });
+
     this.boardService.getAllBoards().pipe(takeUntil(this.sub))
     .subscribe(boards => {
       this.boards = boards;
-      this.activeBoard = boards[0];
+      if (!this.activeBoard.name) {
+        this.activeBoard = boards[0];
+        this.boardService.updateBoard(this.activeBoard);
+      }
     });
+
+
   }
 
   ngOnDestroy(): void {
@@ -52,6 +62,7 @@ export class AppComponent {
   }
   updateActiveBoard(board: Board): void {
     this.activeBoard = board;
+    this.boardService.updateBoard(this.activeBoard);
   }
 
   addBoard(): void {
@@ -66,18 +77,26 @@ export class AppComponent {
       }
 
       this.boards.push(board);
+      this.updateBoards();
     });
   }
 
   editBoard(): void {
+    const board = { ...this.activeBoard};
     const dialogRef = this.dialog.open(BoardModalComponent, {
-      data: { board: this.activeBoard } as BoardView,
+      data: { board } as BoardView,
     });
 
     dialogRef.afterClosed().subscribe((success: boolean) => {
       if (!success) {
         return;
       }
+
+      const originalPosition = this.boards.findIndex(c => c.name == this.activeBoard.name);
+      this.boards[originalPosition] = board;
+      this.activeBoard = board;
+      this.boardService.updateBoard(this.activeBoard);
+      this.updateBoards();
     });
   }
 
@@ -94,6 +113,7 @@ export class AppComponent {
 
       this.boards = this.boards.filter(b => !(b.name === this.activeBoard.name));
       this.activeBoard = DefaultBoard;
+      this.updateBoards();
     });
   }
 
@@ -113,6 +133,18 @@ export class AppComponent {
 
       const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
       newColumn.tasks = [...newColumn.tasks, task];
+      this.updateBoard();
     });
+  }
+
+  updateBoard(): void {
+    const originalPosition = this.boards.findIndex(c => c.name == this.activeBoard.name);
+    this.boards[originalPosition] = { ...this.activeBoard };
+    this.boardService.updateBoard(this.activeBoard);
+    this.updateBoards();
+  }
+
+  updateBoards(): void {
+    this.boardService.updateBoards([...this.boards]);
   }
 }

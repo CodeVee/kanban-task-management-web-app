@@ -16,6 +16,7 @@ export class ThemeTogglerComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService) { }
 
   ngOnInit(): void {
+
     this.sub = this.toggleCtrl.valueChanges.subscribe(darkMode => {
       if (darkMode) {
         this.themeService.changeTheme(Theme.Dark)
@@ -25,10 +26,22 @@ export class ThemeTogglerComponent implements OnInit, OnDestroy {
         this.themeService.changeTheme(Theme.Light)
       }
     });
+    this.checkTheme();
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+  }
+
+  private checkTheme(): void {
+    const themeStr = localStorage.getItem(this.themeService.key) || '';
+    if (!themeStr) {
+      return;
+    }
+    const darkMode = themeStr === Theme.Dark;
+    if (darkMode) {
+      this.toggleCtrl.setValue(darkMode);
+    }
   }
 
 }

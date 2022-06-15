@@ -40,6 +40,7 @@ export class ViewTaskModalComponent implements OnInit, OnDestroy {
   updateSubtask(subtask: SubTask): void {
     const subTask = this.task.subtasks.find(c => c.title == subtask.title)!;
     subTask.isCompleted = !subTask.isCompleted;
+    this.reset = true;
   }
 
   updateStatus(status: string): void {
