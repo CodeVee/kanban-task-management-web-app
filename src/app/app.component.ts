@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { BoardModalComponent } from './components/board-modal/board-modal.component';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { TaskModalComponent } from './components/task-modal/task-modal.component';
-import { Board, BoardView, DefaultBoard, Task, TaskView } from './models/board.model';
+import { Board, BoardView, DefaultBoard, DeleteView, Task, TaskView } from './models/board.model';
 import { Theme } from './models/theme.enum';
 import { BoardService } from './services/board.service';
 import { ThemeService } from './services/theme.service';
@@ -81,7 +82,19 @@ export class AppComponent {
   }
 
   deleteBoard(): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
+      data: { name: this.activeBoard.name, isBoard: true } as DeleteView,
+    });
 
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+
+      if (!success) {
+        return;
+      }
+
+      this.boards = this.boards.filter(b => !(b.name === this.activeBoard.name));
+      this.activeBoard = DefaultBoard;
+    });
   }
 
   addTask(): void {

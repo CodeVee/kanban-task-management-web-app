@@ -12,6 +12,12 @@ export const DefaultBoard: Board = { name: '', columns: []}
 export interface BoardView {
   board: Board
 }
+
+export interface DeleteView {
+  name: string;
+  isBoard: boolean;
+}
+
 export interface Column {
   name: string;
   tasks: Task[];

@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { Board, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
 import { ViewTaskModalComponent } from '../view-task-modal/view-task-modal.component';
 
@@ -60,7 +61,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       }
 
       if (option === TaskOption.Delete) {
-
+        this.deleteTask(task);
       }
     });
 
@@ -84,6 +85,23 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       this.updateBoard(column, task);
     });
   }
+
+  private deleteTask(task:Task): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
+      data: { name: task.title, isBoard: false } as DeleteView,
+    });
+
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+
+      if (!success) {
+        return;
+      }
+
+      const column = this.activeBoard.columns.find(c => c.name === task.status)!;
+      column.tasks = column.tasks.filter(d => !(d.title === task.title));
+    });
+  }
+
 
   private updateBoard(column: string, task: Task) {
     if (task.status === column) {
