@@ -9,6 +9,9 @@ export interface Board {
 
 export const DefaultBoard: Board = { name: '', columns: []}
 
+export interface BoardView {
+  board: Board
+}
 export interface Column {
   name: string;
   tasks: Task[];

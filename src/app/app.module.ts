@@ -15,6 +15,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
 import { ProjectBoardComponent } from './components/project-board/project-board.component';
 import { ViewTaskModalComponent } from './components/view-task-modal/view-task-modal.component';
 import { TaskModalComponent } from './components/task-modal/task-modal.component';
+import { BoardModalComponent } from './components/board-modal/board-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TaskModalComponent } from './components/task-modal/task-modal.component
     TaskCardComponent,
     ProjectBoardComponent,
     ViewTaskModalComponent,
-    TaskModalComponent
+    TaskModalComponent,
+    BoardModalComponent
   ],
   imports: [
     BrowserModule,

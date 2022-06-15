@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, Column, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { Board, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
@@ -12,22 +12,17 @@ import { ViewTaskModalComponent } from '../view-task-modal/view-task-modal.compo
   templateUrl: './project-board.component.html',
   styleUrls: ['./project-board.component.scss']
 })
-export class ProjectBoardComponent implements OnInit, OnDestroy, OnChanges {
+export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   darkMode = false;
-  colors = ['#49C4E5', '#8471F2', '#67E2AE']
+  colors = ['#49C4E5', '#8471F2', '#67E2AE'];
+
   @Input() activeBoard!: Board;
-  columns:string[] = [];
+  @Output() columnAdd = new EventEmitter<void>();
+
   protected sub = new Subscription();
+
   constructor(private themeService: ThemeService, private dialog: MatDialog) { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const col = changes['activeBoard'].currentValue.columns as Column[];
-    if (!!col.length) {
-      this.columns = col.map(c => c.name);
-    }
-
-  }
 
   ngOnInit(): void {
     this.sub.add(this.themeService.currentTheme$
@@ -38,9 +33,14 @@ export class ProjectBoardComponent implements OnInit, OnDestroy, OnChanges {
       this.sub.unsubscribe();
   }
 
+  addColumn(): void {
+    this.columnAdd.emit();
+  }
+
   viewTask(task: Task, column: string): void {
+    const columns = this.activeBoard.columns.map(c => c.name);
     const dialogRef = this.dialog.open(ViewTaskModalComponent, {
-      data: { task, columns: this.columns, column } as TaskView,
+      data: { task, columns, column } as TaskView,
     });
 
     dialogRef.afterClosed().subscribe((option: TaskOption) => {

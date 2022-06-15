@@ -1,11 +1,17 @@
 <div [ngClass]="theme" class="flex relative">
   <app-side-bar
-  [opened]="opened" (close)="closeSideBar()"
+  [opened]="opened" (close)="closeSideBar()" (add)="addBoard()"
   [boards]="boards" [activeBoard]="activeBoard" (selected)="updateActiveBoard($event)"></app-side-bar>
+
   <app-side-bar-toggler (open)="openSideBar()"></app-side-bar-toggler>
+
   <main class="flex-1 duration-1000 main" [ngClass]="{'ml-[30rem]': opened}">
-    <app-nav-bar [opened]="opened"  [activeBoard]="activeBoard"></app-nav-bar>
-    <app-project-board [activeBoard]="activeBoard"></app-project-board>
+
+    <app-nav-bar [opened]="opened" [activeBoard]="activeBoard" (taskAdd)="addTask()"
+    (boardEdit)="editBoard()" (boardDelete)="deleteBoard()"></app-nav-bar>
+
+    <app-project-board [activeBoard]="activeBoard"
+    (columnAdd)="editBoard()"></app-project-board>
   </main>
 </div>
 

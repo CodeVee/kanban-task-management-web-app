@@ -16,7 +16,7 @@
         <span class="font-bold text-md leading-md">{{board.name}}</span>
       </button>
     </ng-container>
-    <button class="pl-3.2 h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white">
+    <button (click)="addBoard()" class="pl-3.2 h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white">
       <img src="assets/images/icon-board-new.svg" alt="board" class="mr-1.6 h-1.6 w-1.6">
       <span class="font-bold text-md leading-md text-purple">+ Create New Board</span>
     </button>

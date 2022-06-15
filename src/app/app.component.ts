@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
-import { Board, DefaultBoard } from './models/board.model';
+import { BoardModalComponent } from './components/board-modal/board-modal.component';
+import { TaskModalComponent } from './components/task-modal/task-modal.component';
+import { Board, BoardView, DefaultBoard, Task, TaskView } from './models/board.model';
 import { Theme } from './models/theme.enum';
 import { BoardService } from './services/board.service';
 import { ThemeService } from './services/theme.service';
@@ -17,7 +20,8 @@ export class AppComponent {
   activeBoard = DefaultBoard;
   protected sub = new Subject<void>();
 
-  constructor(private themeService: ThemeService, private boardService: BoardService) { }
+  constructor(private themeService: ThemeService,
+    private boardService: BoardService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.themeService.currentTheme$.pipe(takeUntil(this.sub))
@@ -47,5 +51,55 @@ export class AppComponent {
   }
   updateActiveBoard(board: Board): void {
     this.activeBoard = board;
+  }
+
+  addBoard(): void {
+    const board: Board = { ...DefaultBoard };
+    const dialogRef = this.dialog.open(BoardModalComponent, {
+      data: { board } as BoardView,
+    });
+
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+      if (!success) {
+        return;
+      }
+
+      this.boards.push(board);
+    });
+  }
+
+  editBoard(): void {
+    const dialogRef = this.dialog.open(BoardModalComponent, {
+      data: { board: this.activeBoard } as BoardView,
+    });
+
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+      if (!success) {
+        return;
+      }
+    });
+  }
+
+  deleteBoard(): void {
+
+  }
+
+  addTask(): void {
+    const task: Task = { title: '', status: '', description: '', subtasks: []}
+    const columns = this.activeBoard.columns.map(c => c.name);
+    const column = '';
+    const dialogRef = this.dialog.open(TaskModalComponent, {
+      data: { task, columns, column } as TaskView,
+    });
+
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+
+      if (!success) {
+        return;
+      }
+
+      const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
+      newColumn.tasks = [...newColumn.tasks, task];
+    });
   }
 }

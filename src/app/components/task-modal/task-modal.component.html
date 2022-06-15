@@ -66,5 +66,5 @@
       </div>
     </mat-menu>
   </div>
-  <button [disabled]="form.invalid" class="btn btn-sm btn-primary" type="submit">Save Changes</button>
+  <button [disabled]="form.invalid" class="btn btn-sm btn-primary" type="submit">{{ editMode ? 'Save Changes' : 'Create Task'}}  </button>
 </form>

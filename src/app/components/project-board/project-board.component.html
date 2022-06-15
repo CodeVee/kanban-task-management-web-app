@@ -15,7 +15,7 @@
       <div class="flex flex-col h-full">
         <div class=" h-6 mb-2.4"></div>
         <div class="flex flex-1 justify-center rounded-lg" [ngClass]="{'card-dark': darkMode, 'card-light': !darkMode}">
-          <button class=" font-bold text-grey-medium hover:text-purple text-xl leading-xl self-center">
+          <button (click)="addColumn()" class=" font-bold text-grey-medium hover:text-purple text-xl leading-xl self-center">
             + New Column
           </button>
         </div>
@@ -27,7 +27,7 @@
       <h3 class="font-bold text-grey-medium text-lg leading-lg mb-3.2">
         This board is empty. Create a new column to get started.
       </h3>
-      <button class=" btn-primary btn-lg w-[17.4rem]">+ Add New Column</button>
+      <button  (click)="addColumn()" class=" btn-primary btn-lg w-[17.4rem]">+ Add New Column</button>
     </div>
   </ng-container>
 

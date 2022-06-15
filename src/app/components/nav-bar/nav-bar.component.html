@@ -5,14 +5,14 @@
   </figure>
   <header class="flex-1 flex items-center px-2.4">
     <h1 class="text-xl leading-xl text-black dark:text-white font-bold mr-auto">{{activeBoard.name}}</h1>
-    <button [disabled]="false" (click)="addTask()" class=" btn-primary btn-lg w-[16.4rem]">+ Add New Task</button>
+    <button [disabled]="!activeBoard.columns.length" (click)="addTask()" class=" btn-primary btn-lg w-[16.4rem]">+ Add New Task</button>
     <button [matMenuTriggerFor]="menu">
       <img src="assets/images/icon-vertical-ellipsis.svg" alt="options" class="h-8 w-2 ml-2.4">
     </button>
     <mat-menu #menu="matMenu" [backdropClass]="'menu'">
       <div [ngClass]="{'bg-grey-vdark': darkMode, 'bg-white': !darkMode}" class="p-1.6 flex flex-col gap-1.6 w-[19.2rem] rounded-xl">
-        <button class="text-left font-medium text-ms leading-ms text-grey-medium">Edit Board</button>
-        <button class="text-left font-medium text-ms leading-ms text-red">Delete Board</button>
+        <button  (click)="editBoard()" class="text-left font-medium text-ms leading-ms text-grey-medium">Edit Board</button>
+        <button  (click)="deleteBoard()" class="text-left font-medium text-ms leading-ms text-red">Delete Board</button>
       </div>
     </mat-menu>
   </header>

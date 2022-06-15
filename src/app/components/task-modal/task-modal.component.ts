@@ -55,7 +55,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.titleCtrl = new FormControl(this.task.title, { nonNullable: true, validators: Validators.required});
     this.descriptionCtrl = new FormControl(this.task.description, { nonNullable: true });
     this.statusCtrl = new FormControl(this.task.status, { nonNullable: true, validators: Validators.required});
-    this.subtasksCtrl = this.fb.array<FormGroup<SubTaskForm>>([], Validators.required);
+    this.subtasksCtrl = this.fb.array<FormGroup<SubTaskForm>>([]);
     this.task.subtasks.forEach(subtask => {
       const group = this.fb.nonNullable.group({
         isCompleted: subtask.isCompleted,
@@ -63,10 +63,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       });
       this.subtasksCtrl.push(group);
     })
-
-    if (this.editMode) {
-      this.subtasksCtrl.setValue(this.task.subtasks);
-    }
 
     this.form = this.fb.group({
       title: this.titleCtrl,

@@ -12,10 +12,15 @@ export class SideBarComponent {
   @Input() activeBoard!: Board;
   @Input() opened!: boolean;
   @Output() close = new EventEmitter<void>();
+  @Output() add = new EventEmitter<void>();
   @Output() selected = new EventEmitter<Board>();
 
   collapseSidebar(): void {
     this.close.emit();
+  }
+
+  addBoard(): void {
+    this.add.emit();
   }
 
   selectBoard(board: Board): void {

@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, Task, TaskSubmit, TaskView } from 'src/app/models/board.model';
+import { Board } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
-import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,6 +14,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   @Input() opened!: boolean;
   @Input() activeBoard!: Board;
+  @Output() taskAdd = new EventEmitter<void>();
+  @Output() boardEdit = new EventEmitter<void>();
+  @Output() boardDelete = new EventEmitter<void>();
   darkMode = false;
   protected sub = new Subscription();
 
@@ -29,22 +31,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   addTask(): void {
-    const task: Task = { title: '', status: '', description: '', subtasks: []}
-    const columns = this.activeBoard.columns.map(c => c.name);
-    const column = '';
-    const dialogRef = this.dialog.open(TaskModalComponent, {
-      data: { task, columns, column } as TaskView,
-    });
-
-    dialogRef.afterClosed().subscribe((success: boolean) => {
-
-      if (!success) {
-        return;
-      }
-
-      const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
-      newColumn.tasks = [...newColumn.tasks, task];
-    });
+    this.taskAdd.emit();
+  }
+  editBoard(): void {
+    this.boardEdit.emit();
+  }
+  deleteBoard(): void {
+    this.boardDelete.emit();
   }
 
 }
