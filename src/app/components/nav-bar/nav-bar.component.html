@@ -1,9 +1,9 @@
 <nav class="bg-white dark:bg-grey-dark lg:h-[9.7rem] sm:h-[8rem] hidden sm:flex border-b border-lines-light dark:border-lines-dark">
-  <figure class="px-2.4 flex items-center w-[21rem] lg:mr-1.2 border-r border-lines-light dark:border-lines-dark"  [ngClass]="{'hidden': opened}">
+  <figure class="px-2.4 flex items-center w-[21rem] border-r border-lines-light dark:border-lines-dark"  [ngClass]="{'hidden': opened}">
     <img src="assets/images/logo-dark.svg" alt="logo" class="h-10 w-60 dark:hidden">
     <img src="assets/images/logo-light.svg" alt="logo" class="h-10 w-60 hidden dark:block">
   </figure>
-  <header class="flex-1 flex px-2.4 items-start">
+  <header class="flex-1 flex sm:px-2.4 lg:px-3.2 items-start">
     <h1 class="lg:text-xl sm:text-lx lg:leading-xl sm:leading-lx lg:pt-[2.9rem] sm:pt-[2.8rem] text-black dark:text-white font-bold mr-auto">{{activeBoard.name}}</h1>
     <div class="flex gap-2.4 lg:pt-8 sm:pt-1.6">
       <button [disabled]="!activeBoard.columns.length" (click)="addTask()" class=" btn-primary btn-lg w-[16.4rem]">+ Add New Task</button>
