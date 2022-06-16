@@ -44,7 +44,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [GitHub](https://github.com/CodeVee/kanban-task-management-web-app)
-- Live Site URL: [Netlify](https://your-live-site-url.com)
+- Live Site URL: [Netlify](https://ubiquitous-meerkat-444d7d.netlify.app)
 
 ## My process
 

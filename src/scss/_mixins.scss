@@ -30,3 +30,9 @@
     @content;
   }
 }
+
+@mixin full-screen {
+  @media (min-width: #{$full-screen}) {
+    @content;
+  }
+}

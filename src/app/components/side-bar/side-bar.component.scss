@@ -1,1 +1,7 @@
+@import 'mixins';
 
+.full {
+  @include full-screen {
+    height: 102.4rem;
+  }
+}
