@@ -27,6 +27,10 @@
     @apply h-16 rounded-2 text-ms leading-ms;
   }
 
+  .btn-mb {
+    @apply h-3.2 rounded-2.4;
+  }
+
   .main-control {
     @apply w-full cursor-pointer focus:ring-offset-0 focus:ring-transparent focus:border-purple bg-transparent rounded-md placeholder:opacity-25 border-grey-medium/25 h-16 px-1.6 font-medium text-ms leading-ms;
   }
@@ -54,8 +58,16 @@ html, body {
 }
 
 .menu + .cdk-overlay-connected-position-bounding-box {
+
+  @include mobile-wide {
+    left: 5.4rem !important;
+  }
   .mat-menu-panel {
     margin-top: 2.2rem;
+
+    @include mobile-wide {
+      margin-top: 5rem;
+    }
   }
 }
 
@@ -94,6 +106,26 @@ html, body {
       display: block;
     }
   }
+}
+
+.toggle {
+  label::after {
+    position: absolute;
+    content: "";
+    height: 1.4rem;
+    width: 1.4rem;
+    top: .3rem;
+    background-color: $white;
+    border-radius: 50%;
+    transition: .5s;
+  }
+
+  input[type="checkbox"]:checked + label, .move {
+    &::after {
+      transform: translateX(150%);
+    }
+  }
+
 }
 
 @include desktop {

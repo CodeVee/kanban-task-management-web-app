@@ -36,7 +36,7 @@
   <ng-container *ngIf="!activeBoard.columns.length && !!activeBoard.name">
     <div class="flex flex-col justify-center items-center h-full">
       <h3 class=" font-bold text-grey-medium text-lg leading-lg mb-3.2 text-center">
-        This board is empty. Create a new column <br class="lg:hidden"> to get started.
+        This board is empty. Create a new <br class="sm:hidden">column <br class="hidden sm:block lg:hidden"> to get started.
       </h3>
       <button  (click)="addColumn()" class=" btn-primary btn-lg w-[17.4rem]">+ Add New Column</button>
     </div>
