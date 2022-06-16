@@ -1,7 +1,8 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { Board, Column, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
@@ -32,7 +33,23 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.sub.unsubscribe();
+    this.sub.unsubscribe();
+  }
+
+  drop(event: CdkDragDrop<Task[]>, column: string) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      const task: Task = event.item.data;
+      task.status = column;
+    }
+    this.boardUpdate.emit();
   }
 
   addColumn(): void {

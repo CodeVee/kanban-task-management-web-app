@@ -40,7 +40,10 @@ export class ThemeTogglerComponent implements OnInit, OnDestroy {
     }
     const darkMode = themeStr === Theme.Dark;
     if (darkMode) {
-      this.toggleCtrl.setValue(darkMode);
+      setTimeout(() => {
+        this.toggleCtrl.setValue(darkMode);
+      });
+
     }
   }
 

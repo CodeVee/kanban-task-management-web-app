@@ -28,3 +28,7 @@
     background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%);;
   }
 }
+
+.min-ht {
+  min-height: calc(100vh - 20rem);
+}
