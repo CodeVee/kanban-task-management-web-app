@@ -43,7 +43,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [GitHub](https://your-solution-url.com)
+- Solution URL: [GitHub](https://github.com/CodeVee/kanban-task-management-web-app)
 - Live Site URL: [Netlify](https://your-live-site-url.com)
 
 ## My process
@@ -60,19 +60,17 @@ Users should be able to:
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
-
-To see how you can add code snippets, see below:
+Learned how to use Tailwind and Customize it for my project. Also Learned the usage of the drag
+ and drop component from Angular Material. Finally used a Mobile-first workflow.
 
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+Using it to lear Node.js and Express.js by making it a full-stack project.
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
+- [Tailwind CSS Docs](https://tailwindcss.com/docs/installation) - Very useful in finding utility classes.
 
 
 ## Author
