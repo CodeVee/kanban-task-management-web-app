@@ -42,6 +42,9 @@
   .main-error {
     @apply absolute text-red font-medium text-ms leading-ms top-0.8 right-1.6;
   }
+  .modal {
+    @apply w-34.3 sm:w-48 flex flex-col gap-2.4 rounded-lg px-2.4 pt-2.4 pb-3.2 sm:p-3.2;
+  }
 }
 
 @import 'mixins';
@@ -59,12 +62,17 @@ html, body {
 
 .menu + .cdk-overlay-connected-position-bounding-box {
 
+  .mat-menu-panel {
+    margin-top: 2.2rem;
+  }
+}
+
+.mobile-menu + .cdk-overlay-connected-position-bounding-box {
+
   @include mobile-wide {
     left: 5.4rem !important;
   }
   .mat-menu-panel {
-    margin-top: 2.2rem;
-
     @include mobile-wide {
       margin-top: 5rem;
     }
@@ -149,6 +157,10 @@ html, body {
 @include mobile-wide {
   body, html {
     font-size: $fs-11s;
+  }
+
+  .cdk-overlay-pane {
+    max-width: initial !important;
   }
 }
 

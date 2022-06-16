@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit()" [ngClass]="{'bg-grey-dark': darkMode, 'bg-white': !darkMode}" class="w-[48rem] flex flex-col gap-2.4 rounded-lg p-3.2">
+<form [formGroup]="form" (ngSubmit)="submit()" [ngClass]="{'bg-grey-dark': darkMode, 'bg-white': !darkMode}" class="w-34.3 sm:w-48 flex flex-col gap-2.4 rounded-lg p-3.2">
   <h4 [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" class="font-bold text-lg leading-lg">
     {{editMode ? 'Edit Board' : 'Add New Board'}}
   </h4>

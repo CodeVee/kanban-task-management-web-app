@@ -1,6 +1,12 @@
+@import 'mixins';
+
 .board {
   height: calc(100vh - 9.6rem);
   scrollbar-width: thin;
+
+  @include mobile-wide {
+    height: auto;
+  }
 
   &::-webkit-scrollbar {
     width: 1.2rem;

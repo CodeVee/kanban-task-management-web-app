@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, Column, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { Board, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
