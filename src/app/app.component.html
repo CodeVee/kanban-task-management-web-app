@@ -5,7 +5,7 @@
 
   <app-side-bar-toggler (open)="openSideBar()"></app-side-bar-toggler>
 
-  <main class="flex-1 main" [ngClass]="{'lg:ml-[30rem]': opened, 'sm:ml-[26rem]': opened}">
+  <main class="flex-1 duration-700 main" [ngClass]="{'lg:ml-[30rem]': opened, 'sm:ml-[26rem]': opened}">
 
     <app-nav-bar [opened]="opened" [activeBoard]="activeBoard" [boards]="boards"
     (taskAdd)="addTask()"
