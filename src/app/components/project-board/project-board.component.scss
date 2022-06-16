@@ -1,8 +1,18 @@
 @import 'mixins';
 
 .board {
-  height: calc(100vh - 9.6rem);
+  height: calc(100vh - 9.7rem);
   scrollbar-width: thin;
+
+  @include full-screen {
+    height: 92.7rem;
+  }
+
+  @include tablet-wide {
+    height: calc(100vh - 8rem);
+  }
+
+
 
   @include mobile-wide {
     height: auto;

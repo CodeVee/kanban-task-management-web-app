@@ -11,12 +11,11 @@ import { ThemeService } from 'src/app/services/theme.service';
 })
 export class ThemeTogglerComponent implements OnInit, OnDestroy {
 
-  toggleCtrl = new FormControl(false);
+  toggleCtrl = new FormControl(true);
   protected sub = new Subscription();
   constructor(private themeService: ThemeService) { }
 
   ngOnInit(): void {
-
     this.sub = this.toggleCtrl.valueChanges.subscribe(darkMode => {
       if (darkMode) {
         this.themeService.changeTheme(Theme.Dark)
@@ -38,12 +37,11 @@ export class ThemeTogglerComponent implements OnInit, OnDestroy {
     if (!themeStr) {
       return;
     }
-    const darkMode = themeStr === Theme.Dark;
-    if (darkMode) {
+    const lightMode = themeStr === Theme.Light;
+    if (lightMode) {
       setTimeout(() => {
-        this.toggleCtrl.setValue(darkMode);
+        this.toggleCtrl.setValue(false);
       });
-
     }
   }
 

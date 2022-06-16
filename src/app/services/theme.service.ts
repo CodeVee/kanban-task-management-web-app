@@ -8,7 +8,7 @@ import { Theme } from '../models/theme.enum';
 export class ThemeService {
 
   key = 'kanban-theme';
-  protected currentTheme = new BehaviorSubject(Theme.Light);
+  protected currentTheme = new BehaviorSubject(Theme.Dark);
   currentTheme$ = this.currentTheme.asObservable();
 
   changeTheme(theme: Theme): void {
