@@ -1,0 +1,19 @@
+<div [ngClass]="theme" class="flex relative">
+  <app-side-bar
+  [opened]="opened" (close)="closeSideBar()" (add)="addBoard()"
+  [boards]="boards" [activeBoard]="activeBoard" (selected)="updateActiveBoard($event)"></app-side-bar>
+
+  <app-side-bar-toggler (open)="openSideBar()"></app-side-bar-toggler>
+
+  <main class="flex-1 duration-1000 main" [ngClass]="{'lg:ml-[30rem]': opened, 'sm:ml-[26rem]': opened}">
+
+    <app-nav-bar [opened]="opened" [activeBoard]="activeBoard" [boards]="boards"
+    (taskAdd)="addTask()"
+    (boardEdit)="editBoard()" (boardDelete)="deleteBoard()"
+    (boardAdd)="addBoard()" (boardSelect)="updateActiveBoard($event)"></app-nav-bar>
+
+    <app-project-board [activeBoard]="activeBoard"
+    (columnAdd)="editBoard()" (boardUpdate)="updateBoard()"></app-project-board>
+  </main>
+</div>
+

@@ -1,0 +1,70 @@
+<form [formGroup]="form" (ngSubmit)="submit()" [ngClass]="{'bg-grey-dark': darkMode, 'bg-white': !darkMode}" class="modal">
+  <h4 [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" class="font-bold text-lg leading-lg">
+    {{editMode ? 'Edit Task' : 'Add New Task'}}
+  </h4>
+  <div class="flex flex-col">
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-0.8 font-bold text-sm leading-sm">Title</h5>
+    <div class="relative">
+      <input id="title"
+      formControlName="title"
+      type="text"
+      placeholder="e.g Abracadabra Jamming"
+      [ngClass]="{'text-white': darkMode, 'text-black': !darkMode,
+      'main-control-error': titleCtrl.dirty && titleCtrl.touched && titleCtrl.invalid && titleCtrl.errors?.['required']}"
+      class=" main-control h-16">
+      <span
+      *ngIf="titleCtrl.dirty && titleCtrl.touched && titleCtrl.invalid && titleCtrl.errors?.['required']"
+      class="main-error">Can’t be empty</span>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-0.8 font-bold text-sm leading-sm">Description</h5>
+    <textarea id="description"
+            formControlName="description"
+            [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}"
+            placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
+            class=" main-control h-[11.2rem] resize-none">
+            </textarea>
+  </div>
+  <div>
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-0.8 font-bold text-sm leading-sm">Subtasks</h5>
+    <div class="flex flex-col gap-1.2" formArrayName="subtasks">
+      <div *ngFor="let control of subtasksCtrl.controls; let i=index;" class="flex gap-1.6">
+        <div class="relative flex-1" formGroupName="{{i}}">
+          <input id="1"
+          type="text"
+          [ngClass]="{'text-white': darkMode, 'text-black': !darkMode,
+          'main-control-error': control.controls.title.dirty && control.controls.title.touched && control.controls.title.invalid && control.controls.title.errors?.['required']}"
+          class="main-control h-16"
+          formControlName="title">
+          <span
+          *ngIf="control.controls.title.dirty && control.controls.title.touched && control.controls.title.invalid && control.controls.title.errors?.['required']"
+          class="main-error">Can’t be empty</span>
+        </div>
+
+        <button type="button" class="marker" (click)="removeSubtask(i)">
+          <img src="assets/images/icon-cross.svg" alt="remove" class=" h-6 w-6 idle">
+          <img src="assets/images/icon-cross-hover.svg" alt="remove" class=" h-6 w-6 cover">
+        </button>
+      </div>
+      <button type="button" (click)="addSubtask()"
+      [ngClass]="{'btn-secondary-dark': darkMode, 'btn-secondary': !darkMode}"
+      class="btn btn-sm ">+ Add New Subtask</button>
+    </div>
+  </div>
+  <div>
+    <h5 [ngClass]="{'text-white': darkMode, 'text-grey-medium': !darkMode}" class=" mb-0.8 font-bold text-sm leading-sm">Current Status</h5>
+    <button type="button" (click)="openDropdown()" class="flex h-16 w-full items-center justify-between px-1.6 border rounded-md border-grey-medium/25">
+      <span [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" class=" font-medium text-ms leading-ms">{{statusCtrl.value}}</span>
+      <img src="assets/images/icon-chevron-down.svg" alt="arrow-down" *ngIf="!opened">
+      <img src="assets/images/icon-chevron-up.svg" alt="arrow-up" *ngIf="opened">
+    </button>
+    <div class="" [matMenuTriggerFor]="drop" (menuClosed)="close()" (menuOpened)="open()"></div>
+    <mat-menu #drop="matMenu" [backdropClass]="'drop'">
+      <div [ngClass]="{'bg-grey-vdark': darkMode, 'bg-white': !darkMode}" class="p-1.6 flex flex-col gap-1.6 w-[29.5rem] sm:w-[41.6rem] rounded-xl">
+        <button (click)="updateStatus(column)" *ngFor="let column of columns" class="text-left font-medium text-ms leading-ms text-grey-medium">{{column}}</button>
+      </div>
+    </mat-menu>
+  </div>
+  <button [disabled]="form.invalid" class="btn btn-sm btn-primary" type="submit">{{ editMode ? 'Save Changes' : 'Create Task'}}  </button>
+</form>

@@ -1,0 +1,32 @@
+<aside [ngClass]="{ 'w-0': !opened, 'lg:w-[30rem]': opened, 'sm:w-[26rem]': opened}" class="hidden fixed z-10 duration-1000 sm:flex flex-col h-screen bg-white dark:bg-grey-dark py-3.2 border-r border-lines-light dark:border-lines-dark">
+  <figure class="lg:pl-3.2 sm:pl-2.4 mb-[5.4rem]"  [ngClass]="{'hidden': !opened}">
+    <img src="assets/images/logo-dark.svg" alt="logo" class="h-10 w-60 dark:hidden">
+    <img src="assets/images/logo-light.svg" alt="logo" class="h-10 w-60 hidden dark:block">
+  </figure>
+  <div class="mb-auto flex flex-col lg:w-[27.6rem] sm:w-96" [ngClass]="{'hidden': !opened}">
+    <h2 class=" font-bold text-sm leading-sm text-grey-medium tracking-sm lg:pl-3.2 sm:pl-2.4 mb-8 uppercase">All boards ({{boards.length}})</h2>
+    <ng-container *ngFor="let board of boards">
+      <button *ngIf="board.name === activeBoard.name" class="bg-purple lg:pl-3.2 sm:pl-2.4  h-4.8 rounded-r-full flex items-center text-white">
+        <img src="assets/images/icon-board-active.svg" alt="board" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6">
+        <span class="font-bold text-md leading-md">{{board.name}}</span>
+      </button>
+      <button *ngIf="!(board.name === activeBoard.name)" (click)="selectBoard(board)" class="marker lg:pl-3.2 sm:pl-2.4  h-4.8 rounded-r-full flex items-center text-grey-medium hover:bg-purple-low dark:hover:bg-white hover:text-purple">
+        <img src="assets/images/icon-board.svg" alt="board" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6 idle">
+        <img src="assets/images/icon-board-new.svg" alt="board" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6 cover">
+        <span class="font-bold text-md leading-md">{{board.name}}</span>
+      </button>
+    </ng-container>
+    <button (click)="addBoard()" class="lg:pl-3.2 sm:pl-2.4 h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white">
+      <img src="assets/images/icon-board-new.svg" alt="board" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6">
+      <span class="font-bold text-md leading-md text-purple">+ Create New Board</span>
+    </button>
+  </div>
+  <div class="lg:pl-2.4 sm:pl-5 mb-3" [ngClass]="{'hidden': !opened}">
+    <app-theme-toggler></app-theme-toggler>
+  </div>
+  <button [ngClass]="{'hidden': !opened}" (click)="collapseSidebar()" class="marker lg:pl-3.2 sm:pl-2.4 lg:w-[27.6rem] sm:w-96 h-4.8 rounded-r-full flex items-center hover:bg-purple-low dark:hover:bg-white text-grey-medium hover:text-purple">
+    <img src="assets/images/icon-hide-sidebar.svg" alt="hide" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6 idle">
+    <img src="assets/images/icon-hide-sidebar-hover.svg" alt="hide" class="mr-1.2 lg:mr-1.6 h-1.6 w-1.6 cover">
+    <span class="font-bold text-md leading-md">Hide Sidebar</span>
+  </button>
+</aside>

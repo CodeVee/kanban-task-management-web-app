@@ -1,0 +1,45 @@
+<div class="bg-grey-light dark:bg-grey-vdark board py-2.4 px-1.6 sm:px-2.4 overflow-auto whitespace-nowrap">
+  <ng-container *ngIf="activeBoard.columns.length">
+    <div class=" inline-block" cdkDropListGroup>
+      <div
+
+        *ngFor="let column of activeBoard.columns; let i = index"
+        class="inline-block w-[28rem] mr-2.4 whitespace-normal">
+        <div class="flex flex-col">
+          <h3 class="mb-2.4 font-bold text-sm leading-sm tracking-sm text-grey-medium uppercase flex items-center">
+            <span [ngStyle]="{background: colors[i % colors.length]}" class="w-6 h-6 rounded-full mr-1.2"></span>
+            <span>{{column.name}} ({{column.tasks.length}})</span>
+          </h3>
+          <div
+            cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event, column.name)"
+            class="flex flex-col gap-8 min-ht">
+            <app-task-card
+            cdkDrag [cdkDragData]="task"
+            (click)="viewTask(task, column.name)" [task]="task"
+            *ngFor="let task of column.tasks"></app-task-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inline-block w-[28rem] h-full mr-2.4">
+      <div class="flex flex-col h-full">
+        <div class=" h-6 mb-2.4"></div>
+        <div class="flex flex-1 justify-center rounded-lg" [ngClass]="{'card-dark': darkMode, 'card-light': !darkMode}">
+          <button (click)="addColumn()" class=" font-bold text-grey-medium hover:text-purple text-xl leading-xl self-center">
+            + New Column
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!activeBoard.columns.length && !!activeBoard.name">
+    <div class="flex flex-col justify-center items-center h-full">
+      <h3 class=" font-bold text-grey-medium text-lg leading-lg mb-3.2 text-center">
+        This board is empty. Create a new <br class="sm:hidden">column <br class="hidden sm:block lg:hidden"> to get started.
+      </h3>
+      <button  (click)="addColumn()" class=" btn-primary btn-lg w-[17.4rem]">+ Add New Column</button>
+    </div>
+  </ng-container>
+
+</div>
