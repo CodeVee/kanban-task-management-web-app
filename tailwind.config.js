@@ -35,6 +35,7 @@ module.exports = {
       sm: '1.2rem',
       md: '1.5rem',
       lg: '1.8rem',
+      lx: '2rem',
       xl: '2.4rem',
     },
     lineHeight: {
@@ -42,6 +43,7 @@ module.exports = {
       sm: '1.5rem',
       md: '1.9rem',
       lg: '2.3rem',
+      lx: '2.5rem',
       xl: '3rem',
     },
     letterSpacing: {
