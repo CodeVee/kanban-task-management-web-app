@@ -4,7 +4,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { BoardModalComponent } from './components/board-modal/board-modal.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { TaskModalComponent } from './components/task-modal/task-modal.component';
-import { Board, BoardView, DefaultBoard, DeleteView, Task, TaskView } from './models/board.model';
+import {
+  DefaultActiveBoard, DeleteView, IBoardView, ICreateBoard,
+  ICreateTask, IDataColumn, IReadBoard, ITaskView
+} from './models/board.model';
 import { Theme } from './models/theme.enum';
 import { BoardService } from './services/board.service';
 import { ThemeService } from './services/theme.service';
@@ -17,8 +20,8 @@ import { ThemeService } from './services/theme.service';
 export class AppComponent {
   theme!: Theme;
   opened = true;
-  boards: Board[] = [];
-  activeBoard!: Board;
+  boards: IReadBoard[] = [];
+  activeBoard = DefaultActiveBoard;
   protected sub = new Subject<void>();
 
   constructor(private themeService: ThemeService,
@@ -28,21 +31,12 @@ export class AppComponent {
     this.themeService.currentTheme$.pipe(takeUntil(this.sub))
     .subscribe(theme => this.theme = theme);
 
-    this.boardService.getActiveBoard().pipe(takeUntil(this.sub))
-    .subscribe(board => {
-      this.activeBoard = board;
-    });
+    this.loadBoards();
+  }
 
-    this.boardService.getAllBoards().pipe(takeUntil(this.sub))
-    .subscribe(boards => {
-      this.boards = boards;
-      if (!this.activeBoard.name) {
-        this.activeBoard = boards[0];
-        this.boardService.updateBoard(this.activeBoard);
-      }
-    });
-
-
+  private loadBoards(): void {
+    this.boardService.getBoards().pipe(takeUntil(this.sub))
+    .subscribe(boards => this.boards = boards)
   }
 
   ngOnDestroy(): void {
@@ -60,43 +54,42 @@ export class AppComponent {
   openSideBar(): void {
     this.opened = true;
   }
-  updateActiveBoard(board: Board): void {
-    this.activeBoard = board;
-    this.boardService.updateBoard(this.activeBoard);
+  updateActiveBoard(board: IReadBoard): void {
+    this.boardService.getBoardTasks(board).pipe(takeUntil(this.sub))
+    .subscribe(board => this.activeBoard = board)
   }
 
   addBoard(): void {
-    const board: Board = { ...DefaultBoard };
+    const board: ICreateBoard = { ...DefaultActiveBoard };
     const dialogRef = this.dialog.open(BoardModalComponent, {
-      data: { board } as BoardView,
+      data: { board } as IBoardView,
     });
 
-    dialogRef.afterClosed().subscribe((success: boolean) => {
-      if (!success) {
+    dialogRef.afterClosed().pipe(takeUntil(this.sub))
+    .subscribe((res: IReadBoard) => {
+      if (!res) {
         return;
       }
 
-      this.boards.push(board);
-      this.updateBoards();
+      this.loadBoards();
+      this.updateActiveBoard(res);
     });
   }
 
   editBoard(): void {
     const board = { ...this.activeBoard};
     const dialogRef = this.dialog.open(BoardModalComponent, {
-      data: { board } as BoardView,
+      data: { board } as IBoardView,
     });
 
-    dialogRef.afterClosed().subscribe((success: boolean) => {
-      if (!success) {
+    dialogRef.afterClosed().pipe(takeUntil(this.sub))
+    .subscribe((res: IReadBoard) => {
+      if (!res) {
         return;
       }
 
-      const originalPosition = this.boards.findIndex(c => c.name == this.activeBoard.name);
-      this.boards[originalPosition] = board;
-      this.activeBoard = board;
-      this.boardService.updateBoard(this.activeBoard);
-      this.updateBoards();
+      this.loadBoards();
+      this.updateActiveBoard(res);
     });
   }
 
@@ -105,46 +98,50 @@ export class AppComponent {
       data: { name: this.activeBoard.name, isBoard: true } as DeleteView,
     });
 
-    dialogRef.afterClosed().subscribe((success: boolean) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.sub))
+    .subscribe((success: boolean) => {
 
       if (!success) {
         return;
       }
 
-      this.boards = this.boards.filter(b => !(b.name === this.activeBoard.name));
-      this.activeBoard = DefaultBoard;
-      this.updateBoards();
+      this.boardService.deleteBoard(this.activeBoard.id).pipe(takeUntil(this.sub))
+      .subscribe(res => {
+        this.activeBoard = DefaultActiveBoard;
+        this.loadBoards();
+      });
     });
   }
 
   addTask(): void {
-    const task: Task = { title: '', status: '', description: '', subtasks: []}
-    const columns = this.activeBoard.columns.map(c => c.name);
-    const column = '';
+    const task: ICreateTask = { id: '', title: '', status: '', description: '', subtasks: []}
+    const columns = this.activeBoard.columns.map(c =>  ({ id: c.id, name: c.name}) as IDataColumn );
     const dialogRef = this.dialog.open(TaskModalComponent, {
-      data: { task, columns, column } as TaskView,
+      data: { task, columns } as ITaskView,
     });
 
-    dialogRef.afterClosed().subscribe((success: boolean) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.sub))
+    .subscribe((success: boolean) => {
 
       if (!success) {
         return;
       }
-
-      const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
-      newColumn.tasks = [...newColumn.tasks, task];
-      this.updateBoard();
+      this.refreshActiveBoard();
     });
   }
 
-  updateBoard(): void {
-    const originalPosition = this.boards.findIndex(c => c.name == this.activeBoard.name);
-    this.boards[originalPosition] = { ...this.activeBoard };
-    this.boardService.updateBoard(this.activeBoard);
-    this.updateBoards();
+  editTask(task: ICreateTask): void {
+    this.boardService.editTask(task).pipe(takeUntil(this.sub))
+    .subscribe(() => this.refreshActiveBoard())
   }
 
-  updateBoards(): void {
-    this.boardService.updateBoards([...this.boards]);
+  deleteTask(taskId: string): void {
+    this.boardService.deleteTask(taskId).pipe(takeUntil(this.sub))
+    .subscribe(() => this.refreshActiveBoard())
+  }
+
+  refreshActiveBoard(): void {
+    const board: IReadBoard = { id: this.activeBoard.id, name: this.activeBoard.name}
+    this.updateActiveBoard(board);
   }
 }

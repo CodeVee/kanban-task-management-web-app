@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board, DeleteView, Task, TaskOption, TaskView } from 'src/app/models/board.model';
+import { DeleteView, IActiveBoard, ICreateTask, IDataColumn, IReadColumn, IReadTask, ITaskView, TaskOption } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
@@ -19,9 +19,11 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   darkMode = false;
   colors = ['#49C4E5', '#8471F2', '#67E2AE'];
 
-  @Input() activeBoard!: Board;
+  @Input() activeBoard!: IActiveBoard;
   @Output() columnAdd = new EventEmitter<void>();
-  @Output() boardUpdate = new EventEmitter<void>();
+  @Output() taskUpdate = new EventEmitter<void>();
+  @Output() positionChange = new EventEmitter<ICreateTask>();
+  @Output() taskDelete = new EventEmitter<string>();
 
   protected sub = new Subscription();
 
@@ -36,30 +38,34 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  drop(event: CdkDragDrop<Task[]>, column: string) {
+  drop(event: CdkDragDrop<IReadTask[]>, column: IReadColumn) {
+    const readTask = event.item.data as IReadTask;
+    const { id, title, description, status, subtasks }  = readTask;
+    const task: ICreateTask = { id, title, description, status: column.id, subtasks };
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      this.positionChange.emit(task);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
-      const task: Task = event.item.data;
-      task.status = column;
     }
-    this.boardUpdate.emit();
   }
 
   addColumn(): void {
     this.columnAdd.emit();
   }
 
-  viewTask(task: Task, column: string): void {
-    const columns = this.activeBoard.columns.map(c => c.name);
+  viewTask(readTask: IReadTask): void {
+    const columns = this.activeBoard.columns.map(c => ({id: c.id, name: c.name} as IDataColumn));
+    const { id, title, description, status, subtasks }  = readTask;
+
+    const task: ICreateTask = { id, title, description, status: status.id, subtasks };
     const dialogRef = this.dialog.open(ViewTaskModalComponent, {
-      data: { task, columns, column } as TaskView,
+      data: { task, columns } as ITaskView,
     });
 
     dialogRef.afterClosed().subscribe((option: TaskOption) => {
@@ -68,7 +74,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       if (!state.reset && !option) {
         return;
       }
-      this.updateBoard(column, task);
+      this.taskUpdate.emit();
 
       if (!option) {
         return;
@@ -86,12 +92,11 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   }
 
-  private editTask(task:Task): void {
-    const columns = this.activeBoard.columns.map(c => c.name);
-    const column = task.status;
+  private editTask(task: ICreateTask): void {
+    const columns = this.activeBoard.columns.map(c => ({id: c.id, name: c.name}));
 
     const dialogRef = this.dialog.open(TaskModalComponent, {
-      data: { task, columns, column } as TaskView,
+      data: { task, columns } as ITaskView,
     });
 
     dialogRef.afterClosed().subscribe((success: boolean) => {
@@ -99,12 +104,11 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       if (!success) {
         return;
       }
-
-      this.updateBoard(column, task);
+      this.taskUpdate.emit();
     });
   }
 
-  private deleteTask(task:Task): void {
+  private deleteTask(task: ICreateTask): void {
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: task.title, isBoard: false } as DeleteView,
     });
@@ -114,26 +118,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       if (!success) {
         return;
       }
-
-      const column = this.activeBoard.columns.find(c => c.name === task.status)!;
-      column.tasks = column.tasks.filter(d => !(d.title === task.title));
-
-      this.boardUpdate.emit();
+      this.taskDelete.emit(task.id);
     });
-  }
-
-
-  private updateBoard(column: string, task: Task) {
-    if (task.status === column) {
-      this.boardUpdate.emit();
-      return;
-    }
-    const oldColumn = this.activeBoard.columns.find(c => c.name === column)!;
-    oldColumn.tasks = oldColumn.tasks.filter(d => !(d.title === task.title));
-
-    const newColumn = this.activeBoard.columns.find(c => c.name === task.status)!;
-    newColumn.tasks = [...newColumn.tasks, task];
-
-    this.boardUpdate.emit();
   }
 }

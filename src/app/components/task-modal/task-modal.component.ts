@@ -3,9 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
-import { SubTask, Task, TaskSubmit, TaskView } from 'src/app/models/board.model';
+import { ICreateSubtask, ICreateTask, IDataColumn, IReadTask, ITaskView } from 'src/app/models/board.model';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BoardService } from 'src/app/services/board.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -14,13 +15,13 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
 
-  task: Task;
+  task: ICreateTask;
   darkMode = false;
   editMode = false;
   opened = false;
 
-  column: string;
-  columns: string[];
+  columns: IDataColumn[];
+  selectedStatus: IDataColumn = { id: '', name: ''};
 
   form!: FormGroup<TaskForm>;
   titleCtrl!: FormControl<string>;
@@ -35,9 +36,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<TaskModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TaskView) {
+    @Inject(MAT_DIALOG_DATA) public data: ITaskView,
+    private boardService: BoardService,) {
     this.task = data.task;
-    this.column = data.column;
     this.columns = data.columns;
     this.editMode = !!this.task.title;
   }
@@ -58,26 +59,35 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.subtasksCtrl = this.fb.array<FormGroup<SubTaskForm>>([]);
     this.task.subtasks.forEach(subtask => {
       const group = this.fb.nonNullable.group({
+        id: subtask.id,
         isCompleted: subtask.isCompleted,
         title: [subtask.title, Validators.required]
       });
       this.subtasksCtrl.push(group);
     })
 
-    this.form = this.fb.group({
+    this.form = this.fb.nonNullable.group({
+      id: this.task.id,
       title: this.titleCtrl,
       description: this.descriptionCtrl,
       status: this.statusCtrl,
       subtasks: this.subtasksCtrl
     });
+
+    if (this.task.status) {
+      const column = this.columns.find(c => c.id === this.task.status)!;
+      this.updateStatus(column);
+    }
   }
 
-  updateStatus(status: string): void {
-    this.statusCtrl.setValue(status);
+  updateStatus(status: IDataColumn): void {
+    this.statusCtrl.setValue(status.id);
+    this.selectedStatus = status;
   }
 
   addSubtask(): void {
     const group = this.fb.nonNullable.group({
+      id: '',
       isCompleted: false,
       title: ['', Validators.required]
     })
@@ -101,19 +111,30 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
+    const { id, title, description, status, subtasks } = this.form.value;
 
-    const values = this.form.value;
+    const req: ICreateTask = {
+      id: id as string,
+      title: title as string,
+      description: description as string,
+      status: status as string,
+      subtasks: subtasks as ICreateSubtask[]
+    }
 
-    this.task.title = values.title!;
-    this.task.description = values.description!;
-    this.task.status = values.status!;
-    this.task.subtasks = values.subtasks?.map(c => ({ isCompleted: c.isCompleted, title: c.title } as SubTask)) || [];
+    if (this.editMode) {
+      this.boardService.editTask(req).pipe()
+      .subscribe(res => this.dialogRef.close({ id: res, title, description } as IReadTask))
+    }
 
-    this.dialogRef.close(true);
+    if (!this.editMode) {
+      this.boardService.createTask(req).pipe()
+      .subscribe(res => this.dialogRef.close({ id: res, title, description } as IReadTask))
+    }
   }
 }
 
 interface TaskForm {
+  id: FormControl<string>;
   title: FormControl<string>;
   description: FormControl<string>;
   status: FormControl<string>;
@@ -121,6 +142,7 @@ interface TaskForm {
 }
 
 interface SubTaskForm {
+  id: FormControl<string>;
   title: FormControl<string>;
   isCompleted: FormControl<boolean>;
 }

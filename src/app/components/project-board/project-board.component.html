@@ -11,11 +11,11 @@
             <span>{{column.name}} ({{column.tasks.length}})</span>
           </h3>
           <div
-            cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event, column.name)"
+            cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event, column)"
             class="flex flex-col gap-8 min-ht">
             <app-task-card
             cdkDrag [cdkDragData]="task"
-            (click)="viewTask(task, column.name)" [task]="task"
+            (click)="viewTask(task)" [task]="task"
             *ngFor="let task of column.tasks"></app-task-card>
           </div>
         </div>

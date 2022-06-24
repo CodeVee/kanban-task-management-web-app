@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Board } from 'src/app/models/board.model';
+import { IActiveBoard, IReadBoard } from 'src/app/models/board.model';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,12 +8,12 @@ import { Board } from 'src/app/models/board.model';
 })
 export class SideBarComponent {
 
-  @Input() boards!: Board[];
-  @Input() activeBoard!: Board;
+  @Input() boards!: IReadBoard[];
+  @Input() activeBoard!: IActiveBoard;
   @Input() opened!: boolean;
   @Output() close = new EventEmitter<void>();
   @Output() add = new EventEmitter<void>();
-  @Output() selected = new EventEmitter<Board>();
+  @Output() selected = new EventEmitter<IReadBoard>();
 
   collapseSidebar(): void {
     this.close.emit();
@@ -23,7 +23,7 @@ export class SideBarComponent {
     this.add.emit();
   }
 
-  selectBoard(board: Board): void {
+  selectBoard(board: IReadBoard): void {
     this.selected.emit(board);
   }
 

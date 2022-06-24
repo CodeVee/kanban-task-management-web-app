@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubTask, Task } from 'src/app/models/board.model';
+import { ICreateSubtask, IReadTask } from 'src/app/models/board.model';
 
 @Component({
   selector: 'app-task-card',
@@ -8,9 +8,9 @@ import { SubTask, Task } from 'src/app/models/board.model';
 })
 export class TaskCardComponent {
 
-  @Input() task!: Task;
+  @Input() task!: IReadTask;
 
-  calculateCompleted(subtasks: SubTask[]): number {
+  calculateCompleted(subtasks: ICreateSubtask[]): number {
     return subtasks.filter(s => s.isCompleted).length;
   }
 
