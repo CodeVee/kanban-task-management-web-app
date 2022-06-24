@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Board } from 'src/app/models/board.model';
+import { IActiveBoard, IReadBoard } from 'src/app/models/board.model';
 import { Theme } from 'src/app/models/theme.enum';
 import { ThemeService } from 'src/app/services/theme.service';
 
@@ -14,13 +13,13 @@ import { ThemeService } from 'src/app/services/theme.service';
 export class NavBarComponent implements OnInit, OnDestroy {
 
   @Input() opened!: boolean;
-  @Input() activeBoard!: Board;
-  @Input() boards!: Board[];
+  @Input() activeBoard!: IActiveBoard;
+  @Input() boards!: IReadBoard[];
   @Output() taskAdd = new EventEmitter<void>();
   @Output() boardEdit = new EventEmitter<void>();
   @Output() boardDelete = new EventEmitter<void>();
   @Output() boardAdd = new EventEmitter<void>();
-  @Output() boardSelect = new EventEmitter<Board>();
+  @Output() boardSelect = new EventEmitter<IReadBoard>();
   sidebarShown = false;
   darkMode = false;
   protected sub = new Subscription();
@@ -49,7 +48,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.boardAdd.emit();
   }
 
-  selectBoard(board: Board): void {
+  selectBoard(board: IReadBoard): void {
     this.boardSelect.emit(board);
   }
 

@@ -1,72 +1,62 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap, map, BehaviorSubject, Subject } from 'rxjs';
-import { Board, BoardResponse, DefaultBoard } from '../models/board.model';
+import { Observable, map } from 'rxjs';
+import { ApiResponse, IActiveBoard, ICreateBoard, ICreateTask, IReadBoard, IReadColumn } from '../models/board.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BoardService {
 
-  private jsonURL = 'assets/data.json';
-  private boardsKey = 'kanban-boards';
-  private boardKey = 'kanban-active-board';
-  private boards: Board[] = [];
-  protected activeBoard = DefaultBoard;
+  protected boardUrl = `${environment.api_url}boards/`;
+  protected taskUrl = `${environment.api_url}tasks/`;
+
+  protected headers: HttpHeaders = new HttpHeaders()
+  .set('Content-Type', 'application/json');
+
+  protected options = {
+    headers: this.headers
+  }
   constructor(private http: HttpClient) { }
 
-  getAllBoards(): Observable<Board[]> {
-    if (this.boards.length) {
-      return of(this.boards);
-    }
-
-    const boardsStr = localStorage.getItem(this.boardsKey) || '';
-    if (boardsStr) {
-      const boards = JSON.parse(boardsStr) as Board[];
-
-      if (!!boards && !!boards.length) {
-        this.boards = boards;
-        return of(this.boards);
-      }
-    }
-
-
-    return this.http.get<BoardResponse>(this.jsonURL).pipe(
-      tap(res => {
-        this.boards = res.boards;
-        const strValue = JSON.stringify(this.boards);
-        localStorage.setItem(this.boardsKey, strValue);
-      }),
-      map(res => res.boards));
+  getBoards(): Observable<IReadBoard[]> {
+    return this.http.get<ApiResponse<IReadBoard[]>>(this.boardUrl)
+    .pipe(map(res => res.data));
   }
 
-  getActiveBoard(): Observable<Board> {
-
-    if (!!this.activeBoard.name) {
-      return of(this.activeBoard);
-    }
-
-    const boardStr = localStorage.getItem(this.boardKey) || '';
-    if (boardStr) {
-      const board = JSON.parse(boardStr) as Board;
-
-      if (!!board) {
-        this.activeBoard = board;
-        return of(this.activeBoard);
-      }
-    }
-
-
-    return of(DefaultBoard);
+  getBoardTasks(board: IReadBoard): Observable<IActiveBoard> {
+    const { id, name } = board;
+    const url = `${this.boardUrl}${id}/tasks`;
+    return this.http.get<ApiResponse<IReadColumn[]>>(url)
+    .pipe(map(res => ({ id, name, columns: res.data} as IActiveBoard)));
   }
 
-  updateBoards(boards: Board[]): void {
-    this.boards = boards;
-    const strValue = JSON.stringify(this.boards);
-    localStorage.setItem(this.boardsKey, strValue);
+  createBoard(req: ICreateBoard): Observable<string> {
+    return this.http.post<ApiResponse<string>>(this.boardUrl, req, this.options)
+    .pipe(map(res => res.data));
   }
 
-  updateBoard(board: Board): void {
-    this.activeBoard = board;
-    const strValue = JSON.stringify(this.activeBoard);
-    localStorage.setItem(this.boardKey, strValue);
+  editBoard(req: ICreateBoard): Observable<string> {
+    return this.http.patch<ApiResponse<string>>(this.boardUrl + req.id, req, this.options)
+    .pipe(map(res => res.data));
+  }
+
+  deleteBoard(boardId: string): Observable<string> {
+    return this.http.delete<ApiResponse<string>>(this.boardUrl + boardId)
+    .pipe(map(res => res.data));
+  }
+
+  createTask(req: ICreateTask): Observable<string> {
+    return this.http.post<ApiResponse<string>>(this.taskUrl, req, this.options)
+    .pipe(map(res => res.data));
+  }
+
+  editTask(req: ICreateTask): Observable<string> {
+    return this.http.patch<ApiResponse<string>>(this.taskUrl + req.id, req, this.options)
+    .pipe(map(res => res.data));
+  }
+
+  deleteTask(taskId: string): Observable<string> {
+    return this.http.delete<ApiResponse<string>>(this.taskUrl + taskId)
+    .pipe(map(res => res.data));
   }
 }

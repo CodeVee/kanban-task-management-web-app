@@ -13,7 +13,8 @@
     (boardAdd)="addBoard()" (boardSelect)="updateActiveBoard($event)"></app-nav-bar>
 
     <app-project-board [activeBoard]="activeBoard"
-    (columnAdd)="editBoard()" (boardUpdate)="updateBoard()"></app-project-board>
+    (columnAdd)="editBoard()" (positionChange)="editTask($event)"
+    (taskUpdate)="refreshActiveBoard()" (taskDelete)="deleteTask($event)"></app-project-board>
   </main>
 </div>
 
